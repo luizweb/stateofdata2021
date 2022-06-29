@@ -3,13 +3,6 @@ import numpy as np
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 
-if ON_HEROKU:
-    # get the heroku port
-    port = int(os.environ.get('PORT', 17995))  # as per OP comments default is 17995
-else:
-    port = 3000
-
-
 df = pd.read_csv('dados_modelo_stateofdata.csv', sep=";", index_col=0, low_memory=False)
 # st.write(df)
 
