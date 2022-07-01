@@ -42,7 +42,7 @@ st.write('Preencha os campos abaixo e clique no botão para o algoritmo de Machi
 # --- colunas --- #
 # col1, col2, col3 = st.columns(3)
 
-col1, padding, col2, padding, col3 = st.columns((10,2,10,2,10))
+col1, padding, col2, padding, col3 = st.columns((10,1,10,1,10))
 
 col1.markdown(icone_seta + ' **Dados Demográficos**', unsafe_allow_html=True)
 col2.markdown(icone_seta + ' **O trabalho na Área de Dados**', unsafe_allow_html=True)
