@@ -1,7 +1,14 @@
 import streamlit as st
-import numpy as np
 import pandas as pd
+import time
 from sklearn.linear_model import LogisticRegression
+
+# Use the full page instead of a narrow central column
+st.set_page_config(layout="wide")
+
+icone_seta = "<svg xmlns='http://www.w3.org/2000/svg' width='20' height='20' fill='currentColor' class='bi bi-arrow-down-square' viewBox='0 0 16 16'><path fill-rule='evenodd' d='M15 2a1 1 0 0 0-1-1H2a1 1 0 0 0-1 1v12a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1V2zM0 2a2 2 0 0 1 2-2h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H2a2 2 0 0 1-2-2V2zm8.5 2.5a.5.5 0 0 0-1 0v5.793L5.354 8.146a.5.5 0 1 0-.708.708l3 3a.5.5 0 0 0 .708 0l3-3a.5.5 0 0 0-.708-.708L8.5 10.293V4.5z'/></svg>"
+icone_moeda = "<svg xmlns='http://www.w3.org/2000/svg' width='30' height='30' fill='currentColor' class='bi bi-coin' viewBox='0 0 16 16'><path d='M5.5 9.511c.076.954.83 1.697 2.182 1.785V12h.6v-.709c1.4-.098 2.218-.846 2.218-1.932 0-.987-.626-1.496-1.745-1.76l-.473-.112V5.57c.6.068.982.396 1.074.85h1.052c-.076-.919-.864-1.638-2.126-1.716V4h-.6v.719c-1.195.117-2.01.836-2.01 1.853 0 .9.606 1.472 1.613 1.707l.397.098v2.034c-.615-.093-1.022-.43-1.114-.9H5.5zm2.177-2.166c-.59-.137-.91-.416-.91-.836 0-.47.345-.822.915-.925v1.76h-.005zm.692 1.193c.717.166 1.048.435 1.048.91 0 .542-.412.914-1.135.982V8.518l.087.02z'/><path d='M8 15A7 7 0 1 1 8 1a7 7 0 0 1 0 14zm0 1A8 8 0 1 0 8 0a8 8 0 0 0 0 16z'/><path d='M8 13.5a5.5 5.5 0 1 1 0-11 5.5 5.5 0 0 1 0 11zm0 .5A6 6 0 1 0 8 2a6 6 0 0 0 0 12z'/></svg>"
+
 
 df = pd.read_csv('dados_modelo_stateofdata.csv', sep=";", index_col=0, low_memory=False)
 # st.write(df)
@@ -29,15 +36,17 @@ dicio_faixa_salarial = {
 
 
 
-#st.title('State of Data 2021')
-#st.header('State of Data 2021')
-st.subheader('State of Data 2021')
+st.markdown('#### Calculadora de Faixa Salarial')
+st.write('Preencha os campos abaixo e clique no botão para o algoritmo de Machine Learning estimar a faixa salarial!')
 
 # --- colunas --- #
-col1, col2, col3 = st.columns(3)
-col1.write('Dados Demográficos')
-col2.write('O trabalho na área de dados')
-col3.write('Conhecimentos técnicos')
+# col1, col2, col3 = st.columns(3)
+
+col1, padding, col2, padding, col3 = st.columns((10,2,10,2,10))
+
+col1.markdown(icone_seta + ' **Dados Demográficos**', unsafe_allow_html=True)
+col2.markdown(icone_seta + ' **O trabalho na Área de Dados**', unsafe_allow_html=True)
+col3.markdown(icone_seta + ' **Conhecimentos Técnicos**', unsafe_allow_html=True)
 
 
 # --- coluna 1 --- #
@@ -140,13 +149,16 @@ tableau_sel = col3.checkbox("Tableau")
 googleds_sel = col3.checkbox("Google DS")
 
 
-
-resultado = col3.button('Descubra sua faixa salarial')
+resultado = col3.button('Estimar a faixa salarial!')
 
 
 # --- Execução da Predição ---
 if resultado:
     
+    with st.spinner('Calculando...'):
+        time.sleep(3)
+
+
     def buscar_dicionario(dicio, selecao):
         for k,v in dicio.items():
             if k == selecao:
@@ -212,10 +224,16 @@ if resultado:
     descricao = str(buscar_resultado(dicio_faixa_salarial, resultado[0].astype(int))[1])
         
 
-    # .str.replace(, , regex=True)
-    st.subheader("Resultado: faixa salaria " + descricao)
+    
 
 
+    st.markdown('--------')
+    st.markdown(icone_moeda + " <font size=5>Foi estimado uma <b>Faixa Salarial " + descricao + "</b></font>", unsafe_allow_html=True)
+    # st.success('Obrigado por utilizar a calculadora!') 
+
+else:
+    st.markdown('--------')
+    st.markdown('**O resultado será exibido aqui!** Preencha o formulário e calcule uma estimativa da faixa salarial. ')
 
 
 # --- Ordem:
@@ -225,4 +243,3 @@ if resultado:
 # regiao_Centro_Oeste,regiao_Exterior,regiao_Nordeste,regiao_Norte,regiao_Sudeste,regiao_Sul,
 # forma_trab_hibrido_com_dias_fixos,forma_trab_hibrido_flexível,forma_trab_totalmente_presencial,forma_trab_totalmente_remoto,
 # atuacao_Analise_Dados,atuacao_Ciencia_Dados,atuacao_Engenharia_Dados,atuacao_Gestor,atuacao_Outra
-
