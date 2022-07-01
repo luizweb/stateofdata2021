@@ -155,8 +155,8 @@ resultado = col3.button('Estimar a faixa salarial!')
 # --- Execução da Predição ---
 if resultado:
     
-    with st.spinner('Calculando...'):
-        time.sleep(3)
+    with st.spinner('Calculando...Por favor, aguarde...'):
+        time.sleep(4)
 
 
     def buscar_dicionario(dicio, selecao):
